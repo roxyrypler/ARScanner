@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <script type="text/javascript" src="./lib/socketIO.js"></script>
+  <script type="text/javascript" src="./lib/three.js"></script>
+  <script type="text/javascript" src="./lib/OrbitControls.js"></script>
+
+  <style>
+    body {
+      padding: 0px;
+      margin: 0px;
+      overflow: hidden;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <script>
+
+    let socket;
+
+    function setup() {
+      socket = io.connect('http://localhost:3000/');
+
+      socket.on("sendToOthers", (data) => {
+        console.log("msg from Serve:" + data);
+        gettingMSG(data);
+
+      });
+
+      socket.on("PointFromUnity", (data) => {
+        console.log("Point Location: " + "X: " + data.TransformX + " Y: " + data.TransformY + " X: " + data.TransformZ);
+
+        var geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
+        var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        var cube = new THREE.Mesh(geometry, material);
+        cube.position.x = data.TransformX;
+        cube.position.y = data.TransformY;
+        cube.position.z = data.TransformZ;
+        scene.add(cube);
+      });
+    }
+
+    setup();
+
+    var scene = new THREE.Scene();
+
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+
+    var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+    //controls.update() must be called after any manual changes to the camera's transform
+    camera.position.set(0, 20, 100);
+    controls.update();
+/*
+    let color = new THREE.Color("rgb(210,218,226)");
+
+    var geometry = new THREE.BoxGeometry(1, 1, 1);
+    var material = new THREE.MeshBasicMaterial(color);
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+*/
+    var light = new THREE.PointLight(0xff0000, 1, 50);
+    light.position.set(50, 50, 50);
+    scene.add(light);
+
+
+
+    var animate = function () {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+  </script>
+
+</body>
+
+</html>
