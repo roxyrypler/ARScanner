@@ -50,3 +50,5 @@ run the unity project located in UnityProjects/InitialTestNotAR/loggingdata/
 > css
 > javascript
 ```
+
+## Concept build RnD by and for XVision Consulting AS
