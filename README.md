@@ -33,3 +33,17 @@ From there you can build to IOS
 run the unity project located in UnityProjects/InitialTestNotAR/loggingdata/
 
 ```
+
+### Technology used in this project
+
+```
+> Unity
+> C# Unity API
+> ARKit
+> ARFoundation
+> Node.js
+> Express.js
+> Socket.io
+> Localtunnel.me NPM module
+> Three.js
+```
